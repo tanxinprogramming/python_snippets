@@ -2,7 +2,7 @@
 """
 @editor: PyCharm
 @project: python_snippet
-@file: LoggerBase.py
+@file: logger_base.py
 @author: tanxin
 @create_time: 2022/10/15 17:43
 @version: 1.0
