@@ -34,16 +34,19 @@ from logging.handlers import TimedRotatingFileHandler
 
 
 class LoggerBase:
-    def __init__(self, format_string: str = None, default_level: int = logging.INFO):
+    def __init__(self, name: str = None, format_string: str = None, default_level: int = logging.INFO):
         self.default_level = default_level
         if format_string is None:
-            self.format_string = '%(asctime)s [%(name)s.%(funcName)s] %(levelname)s: %(message)s'
+            format_string = '%(asctime)s [%(name)s.%(funcName)s] %(levelname)s: %(message)s'
         else:
-            self.format_string = format_string
+            format_string = format_string
         # 创建Formatter类
-        self.formatter = logging.Formatter(self.format_string)
+        self.formatter = logging.Formatter(format_string)
         # 创建日志类
-        self.logger = logging.getLogger(self.__class__.__name__)
+        if name is None:
+            name = self.__class__.__name__
+        self.logger = logging.getLogger(name)
+        self.logger.setLevel(self.default_level)
 
     def _add_console_handler(self, level: int = None) -> None:
         handler = logging.StreamHandler()
@@ -105,3 +108,14 @@ class LoggerBase:
         else:
             handler.setLevel(level)
         handler.setFormatter(self.formatter)
+
+
+class LoggerBaseTest(LoggerBase):
+    def __init__(self):
+        super().__init__()
+        self._add_console_handler()
+        self.logger.info('abcd')
+
+
+if __name__ == '__main__':
+    LoggerBaseTest()
