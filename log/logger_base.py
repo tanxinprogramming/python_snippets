@@ -28,6 +28,7 @@ thread	%(thread)d	线程ID
 threadName	%(thread)s	线程名称
 """
 import re
+import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
@@ -44,23 +45,22 @@ class LoggerBase:
         # 创建日志类
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def add_console_handler(self, level: int = None) -> None:
+    def _add_console_handler(self, level: int = None) -> None:
         handler = logging.StreamHandler()
         self.__set_format_and_level_to_handler(handler, level)
         self.logger.addHandler(handler)
 
-    def add_time_rotate_file_handler(self, file_path: str, level: int = None) -> None:
+    def _add_file_handler(self, file_path: str, level: int = None) -> None:
         handler = logging.FileHandler(file_path)
         self.__set_format_and_level_to_handler(handler, level)
         self.logger.addHandler(handler)
 
-    def add_time_rotate_file_handler(self
-                                     , directory_path: str
-                                     , max_file_size: str
-                                     , interval_by_hours: int = None
-                                     , backup_count: int = None
-                                     , file_name: str = None
-                                     , level: int = None) -> None:
+    def _add_time_rotate_file_handler(self,
+                                      directory_path: str,
+                                      interval_by_hours: int = None,
+                                      backup_count: int = None,
+                                      file_name_prefix: str = None,
+                                      level: int = None) -> None:
         """
         file_name：日志文件名的prefix；
 
@@ -76,10 +76,9 @@ class LoggerBase:
 
             backupCount: 表示日志文件的保留个数；
         :param directory_path: 文件保存路径
-        :param max_file_size: 最大文件大小，暂时没用
         :param interval_by_hours: 每多少小时生成一个新的日志
         :param backup_count: 保留的日志数量
-        :param file_name: 文件名前缀
+        :param file_name_prefix: 文件名前缀
         :param level: 打印日志级别
         :return: 无返回
         """
@@ -87,9 +86,9 @@ class LoggerBase:
             interval_by_hours = 24
         if backup_count is None:
             backup_count = 20
-        if file_name is None:
-            file_name = 'log_'
-        handler = TimedRotatingFileHandler(file_name
+        if file_name_prefix is None:
+            file_name_prefix = 'log_'
+        handler = TimedRotatingFileHandler(os.path.join(directory_path, file_name_prefix)
                                            , when='H'
                                            , interval=interval_by_hours
                                            , backupCount=backup_count
