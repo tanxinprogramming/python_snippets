@@ -2,7 +2,7 @@
 """
 @editor: PyCharm
 @project: 日文乱码文件名改为gbk
-@file: main.py
+@file: transformer.py
 @author: tanxin
 @create_time: 2022/1/12 19:13
 @version: 1.0
@@ -36,8 +36,8 @@ class FileNameCodingChanger:
 
 if __name__ == '__main__':
     _coding_dict1 = {
-        'from': 'shift-jis',
-        'to': 'gbk',
+        'from': 'shift-jis',  # 文件名本来的编码
+        'to': 'gbk',  # 系统编码
     }
     _coding_dict2 = {
         'from': 'gbk',
