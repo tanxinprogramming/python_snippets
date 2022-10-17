@@ -33,7 +33,7 @@ class Transformer(LoggerBase):
             return file_path
         new_file_path = self.change_extension(file_path, 'png')
         picture = pillow_avif.AvifImagePlugin.Image.open(file_path)
-        picture.save(new_file_path, 'PNG')
+        picture.save(new_file_path, 'JPEG', quanlity=70)
         return new_file_path
 
     def zip_avif_to_zip_png(self, file_path: str):
@@ -52,7 +52,7 @@ class Transformer(LoggerBase):
                 shutil.move(old_file_path, new_file_path)
                 file_paths.append(new_file_path)
         # 打包到源文件夹
-        new_file_name = os.path.basename(file_path).replace('AVIF', 'PNG')
+        new_file_name = os.path.basename(file_path).replace('AVIF', 'JPEG')
         new_file_path = os.path.join(os.path.dirname(file_path), new_file_name)
         self.logger.info(f'开始打包 {new_file_path}')
         zip = zipfile.ZipFile(new_file_path, 'w', zipfile.ZIP_STORED)
