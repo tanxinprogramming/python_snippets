@@ -34,7 +34,7 @@ from logging.handlers import TimedRotatingFileHandler
 
 
 class LoggerBase:
-    def __init__(self, name: str = None, format_string: str = None, default_level: int = logging.INFO):
+    def __init__(self, name: str = None, format_string: str = None, default_level: int = logging.DEBUG):
         self.default_level = default_level
         if format_string is None:
             format_string = '%(asctime)s [%(name)s.%(funcName)s] %(levelname)s: %(message)s'
