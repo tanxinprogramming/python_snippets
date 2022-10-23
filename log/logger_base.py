@@ -37,7 +37,7 @@ class LoggerBase:
     def __init__(self, name: str = None, format_string: str = None, default_level: int = logging.DEBUG):
         self.default_level = default_level
         if format_string is None:
-            format_string = '%(asctime)s [%(name)s.%(funcName)s] %(levelname)s: %(message)s'
+            format_string = '%(asctime)s [%(name)s.%(funcName)s:%(lineno)d] %(levelname)s: %(message)s'
         else:
             format_string = format_string
         # 创建Formatter类
